@@ -1,0 +1,13 @@
+{
+  "uk_to_en_output": {},
+  "en_to_uk_output": {},
+  "uk_tts": {
+    "WordPress": "вордпрес",
+    "React": "реакт",
+    "Next.js": "некст джей ес",
+    "JavaScript": "джаваскрипт",
+    "TypeScript": "тайпскрипт",
+    "API": "ей пі ай",
+    "GitHub": "гітхаб"
+  }
+}

@@ -1,0 +1,12 @@
+# Torch is installed separately by setup_local.ps1 (CUDA or CPU build)
+transformers>=4.57,<5
+huggingface-hub>=0.34,<1
+hf_xet>=1.6
+sentencepiece>=0.2
+sacremoses>=0.1
+piper-tts>=1.3
+sounddevice>=0.5
+numpy>=2.2
+scipy>=1.14,<2
+webrtcvad-wheels>=2.0.14
+ctranslate2>=4.5,<5
