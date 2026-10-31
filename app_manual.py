@@ -61,7 +61,7 @@ class ScrollColumn(ttk.LabelFrame):
 class ManualInterpreterApp(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Live Interpreter MANUAL | UA ↔ EN")
+        self.title("Live Interpreter | English ↔ Ukrainian")
         self.geometry("1280x860")
         self.minsize(1080, 720)
 
@@ -156,12 +156,12 @@ class ManualInterpreterApp(tk.Tk):
 
         ttk.Label(
             root,
-            text="Live Interpreter MANUAL",
+            text="Live Interpreter",
             font=("Segoe UI", 20, "bold"),
         ).grid(row=0, column=0, columnspan=4, sticky="w")
         ttk.Label(
             root,
-            text="Текст перекладається автоматично. Голос запускається тільки кнопкою.",
+            text="Translation is automatic. Voice output requires a button press.",
         ).grid(row=1, column=0, columnspan=4, sticky="w", pady=(2, 10))
 
         ttk.Label(root, text="Local AI:").grid(row=2, column=0, sticky="w")
@@ -175,10 +175,10 @@ class ManualInterpreterApp(tk.Tk):
         self.meet_out_var = tk.StringVar()
 
         rows = [
-            ("Я говорю: фізичний мікрофон", self.mic_var, self.mic_inputs, "mic_combo"),
-            ("Вони говорять: Voicemeeter Out B1", self.meet_in_var, self.meet_inputs, "meet_in_combo"),
-            ("Я чую: навушники", self.headphones_var, self.headphone_outputs, "headphones_combo"),
-            ("Meet чує: Voicemeeter AUX Input", self.meet_out_var, self.meet_outputs, "meet_out_combo"),
+            ("My microphone", self.mic_var, self.mic_inputs, "mic_combo"),
+            ("Meeting audio input: Voicemeeter Out B1", self.meet_in_var, self.meet_inputs, "meet_in_combo"),
+            ("My headphones / speakers", self.headphones_var, self.headphone_outputs, "headphones_combo"),
+            ("Audio sent to Meet: Voicemeeter AUX Input", self.meet_out_var, self.meet_outputs, "meet_out_combo"),
         ]
         for row, (label, var, source, attr) in enumerate(rows, 3):
             ttk.Label(root, text=label).grid(row=row, column=0, sticky="w", pady=4)
@@ -188,7 +188,7 @@ class ManualInterpreterApp(tk.Tk):
             combo.grid(row=row, column=1, columnspan=3, sticky="ew", padx=(10, 0), pady=4)
             setattr(self, attr, combo)
 
-        ttk.Label(root, text="Оригінальна англійська в навушниках").grid(
+        ttk.Label(root, text="Original English volume in headphones").grid(
             row=7, column=0, sticky="w", pady=(6, 0)
         )
         ttk.Scale(
@@ -219,14 +219,14 @@ class ManualInterpreterApp(tk.Tk):
             controls, text="↻ Refresh audio", command=self.refresh
         ).pack(side="left")
         ttk.Button(
-            controls, text="🧹 Очистити картки", command=self._clear_cards
+            controls, text="🧹 Clear cards", command=self._clear_cards
         ).pack(side="left", padx=(8, 0))
 
         status = ttk.Frame(root)
         status.grid(row=9, column=0, columnspan=4, sticky="ew", pady=(0, 8))
-        ttk.Label(status, text="Мій канал:").pack(side="left")
+        ttk.Label(status, text="My channel:").pack(side="left")
         ttk.Label(status, textvariable=self.ua_en_status).pack(side="left", padx=(4, 18))
-        ttk.Label(status, text="Їхній канал:").pack(side="left")
+        ttk.Label(status, text="Other participants:").pack(side="left")
         ttk.Label(status, textvariable=self.en_ua_status).pack(side="left", padx=(4, 18))
         ttk.Label(status, textvariable=self.system_var).pack(side="right")
 
@@ -237,12 +237,12 @@ class ManualInterpreterApp(tk.Tk):
         panels.rowconfigure(0, weight=1)
 
         self.incoming = ScrollColumn(
-            panels, "ВОНИ → ТИ   English → Українська"
+            panels, "THEM → YOU   English → Ukrainian"
         )
         self.incoming.grid(row=0, column=0, sticky="nsew", padx=(0, 6))
 
         self.outgoing = ScrollColumn(
-            panels, "ТИ → ВОНИ   Українська → English"
+            panels, "YOU → THEM   Ukrainian → English"
         )
         self.outgoing.grid(row=0, column=1, sticky="nsew", padx=(6, 0))
 
@@ -374,9 +374,9 @@ class ManualInterpreterApp(tk.Tk):
                 self.incoming,
                 "English",
                 source,
-                "Український переклад",
+                "Ukrainian translation",
                 translated,
-                "🔊 Озвучити мені",
+                "🔊 Play translation",
                 self._speak_uk,
             ),
         )
@@ -388,13 +388,13 @@ class ManualInterpreterApp(tk.Tk):
             0,
             lambda: self._add_card(
                 self.outgoing,
-                "Українська",
+                "Ukrainian",
                 source,
                 "English translation",
                 translated,
-                "▶ Відправити в Meet",
+                "▶ Send to Meet",
                 self._send_en,
-                "🔊 Послухати",
+                "🔊 Preview",
                 self._preview_en,
             ),
         )
@@ -414,7 +414,7 @@ class ManualInterpreterApp(tk.Tk):
                 output_cb(audio)
                 self.after(0, lambda: status_var.set("✓"))
             except Exception as exc:
-                self.after(0, lambda: status_var.set(f"Помилка: {exc}"))
+                self.after(0, lambda: status_var.set(f"Error: {exc}"))
             finally:
                 self.after(0, lambda: button.config(state="normal"))
 
@@ -425,7 +425,7 @@ class ManualInterpreterApp(tk.Tk):
             text_box, button, status_var,
             "uk",
             self.hp.push_translation_48 if self.hp else None,
-            "Готую голос…",
+            "Generating audio…",
         )
 
     def _preview_en(self, text_box, button, status_var):
@@ -433,7 +433,7 @@ class ManualInterpreterApp(tk.Tk):
             text_box, button, status_var,
             "en",
             self.hp.push_translation_48 if self.hp else None,
-            "Готую прослуховування…",
+            "Preparing preview…",
         )
 
     def _send_en(self, text_box, button, status_var):
@@ -441,7 +441,7 @@ class ManualInterpreterApp(tk.Tk):
             text_box, button, status_var,
             "en",
             self.vm.push_pcm48 if self.vm else None,
-            "Готую та відправляю…",
+            "Generating and sending…",
         )
 
     def _error(self, message):
@@ -463,7 +463,7 @@ class ManualInterpreterApp(tk.Tk):
             headphones = self.outputs[self.headphones_var.get()]
             meet_out = self.outputs[self.meet_out_var.get()]
         except KeyError:
-            messagebox.showerror("Audio", "Оберіть усі 4 аудіопристрої.")
+            messagebox.showerror("Audio", "Please select all four audio devices.")
             return
 
         try:
